@@ -8,33 +8,59 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Google Sheet Intrigation</title>
     </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <form class="mt-5">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
+            <div class="col-md-6 offset-md-3 mt-5">
+                <div class="card">                    
+                    <div class="card-body">
+                        <h5 class="card-title">User Info</h5>
+                        <form class="" method="POST" name="google-sheet">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-4">Submit</button>
+                        </form>
+
+                        <p id="submit_msg" class="text-success"></p>
+                        <p id="submit_err_msg" class="text-danger"></p>
                     </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwFM6l8K8MJyxPFEhxQnyba_8dN9V789g25_rmveYmC0UAno6ztouLaVQ/exec'
+        const form = document.forms['google-sheet']
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => {
+                    console.log('Success!', response)
+                    document.getElementById("submit_msg").innerHTML = "Success! Your info saved Succesfully...";
+                })
+                .catch(error => {
+                    console.error('Error!', error.message)
+                    document.getElementById("submit_err_msg").innerHTML = "Failed! Sorry we cann't procces your data :(";
+                })
+        })
+    </script>
 
 </body>
 </html>
